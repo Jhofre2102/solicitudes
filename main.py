@@ -28,11 +28,13 @@ def ruta_consulta():
     
 #ruta para capturar datos por el cuerpo de solicitud para el body
 
-@app.route("/registro",methods={"GET"})
+#muestra el formulario al usuario 
+
+@app.route("/registro",methods={"GET"}) #se define la ruta
 def ruta_registro():
     return render_template("formulario.html")
 
-@app.route("/registro",methods={"POST"})    
+@app.route("/registro",methods={"POST"}) #se define la ruta
 def procesar_registro():
     nombre=request.form.get("Nombre")
     correo=request.form.get("correo")
