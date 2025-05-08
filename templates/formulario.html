@@ -19,6 +19,14 @@
 
     </form>
 
+    <h2>Listado de estudiantes<h2>
+        <ul>
+        {% for estudiante in listado %}
+        <li>{{ estudiante.nombre }} - {{ estudiante.correo}}</li>
+        {% endfor %}
+    </ul>
+    
+
 
 
 

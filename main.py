@@ -1,4 +1,4 @@
-from flask import Flask,request,render_template
+from flask import Flask,request,render_template,make_response
 
 
 
@@ -29,20 +29,55 @@ def ruta_consulta():
 #ruta para capturar datos por el cuerpo de solicitud para el body
 
 #muestra el formulario al usuario 
-
+listado=[]
 @app.route("/registro",methods={"GET"}) #se define la ruta
 def ruta_registro():
-    return render_template("formulario.html")
+    #listado=[{"nombre":"jhon","correo":"jhofre37@hotmail.com"}]
+    return render_template("formulario.html",listado=listado)
 
 @app.route("/registro",methods={"POST"}) #se define la ruta
 def procesar_registro():
-    nombre=request.form.get("Nombre")
+    nombre=request.form.get("nombre")
     correo=request.form.get("correo")
+    estudiantes={"nombre":nombre,"correo":correo}
+    listado.append(estudiantes)
     
-    return f"El estudiante a resgistrar es: {nombre} el correo a registrar es {correo}"
     
     
+    #print (nombre)
+    return f"El estudiante quedo registrado como : {nombre} y su correo es {correo}"
+    
+    
+#parametros en la ruta
+@app.route("/estudiantes/<string:area>/<int:grupo>")
+def mostrar_estudiantes(grupo,area):
+     return f"El programa de formacion consultado es {area} y el grupo consultado es {grupo}"
+     
  
+#Encabezados HTTP Hypertext Transfer Protocol
+ 
+@app.route('/ver-headers')
+def ver_headers():
+    agente_usuario = request.headers.get('User-Agent')
+    return f"Tu navegador es: {agente_usuario}"
+
+
+#gestion de las cookies
+
+@app.route('/crear-cookie')
+def crear_cookie():
+ respuesta = make_response("Cookie creada!") # es un mensaje del navegador
+ respuesta.set_cookie('usuario_logeado', 'true',max_age=60*60*24,httponly=True)
+ return respuesta
+
+
+@app.route('/leer-cookie')
+def leer_cookie():
+ valor = request.cookies.get('usuario_logeado')
+ return f"Valor de la cookie: {valor}"
+
+
+
 
 if __name__=="__main__":
     app.run(debug=True)
